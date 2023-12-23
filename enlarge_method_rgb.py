@@ -1,16 +1,6 @@
 import numpy as np
 
 
-def larger(a, b):
-    max = a if a >= b else b
-    return max
-
-
-def smaller(a, b):
-    min = a if a < b else b
-    return min
-
-
 def nearest_neighbor(src, dst_shape, magni):
     # Original image size
     src_height = src.shape[0]
@@ -58,20 +48,23 @@ def bilinear_interpolation(src, dst_shape, magni):
             if (int(dst_x / magni) == dst_x / magni) and (int(dst_y / magni) == dst_y / magni):
                 (src_x, src_y) = (int(dst_x / magni), int(dst_y / magni))
                 dst[dst_x, dst_y] = src[src_x, src_y]
-            elif int(dst_x / magni) == dst_x / magni:
-                (a_x, a_y) = (int(dst_x / magni), int(dst_y / magni))
-                (b_x, b_y) = (int(dst_x / magni), int(dst_y / magni) + 1)
-                if b_x > src_height - 1 or b_y > src_width - 1:
+
+    for dst_x in range(dst_height):
+        for dst_y in range(dst_width):
+            if int(dst_x / magni) == dst_x / magni:
+                (a_x, a_y) = (int(dst_x / magni) * magni, int(dst_y / magni) * magni)
+                (b_x, b_y) = (int(dst_x / magni) * magni, int(dst_y / magni) * magni + magni)
+                if b_x > dst_height - 1 or b_y > dst_width - 1:
                     continue
                 for i in range(3):
-                    dst[dst_x, dst_y, i] = smaller(src[a_x, a_y, i], src[b_x, b_y, i]) + (larger(src[a_x, a_y, i], src[b_x, b_y, i]) - smaller(src[a_x, a_x, i], src[b_x, b_y, i])) * (dst_y - a_y * magni) / magni
+                    dst[dst_x, dst_y, i] = min(dst[a_x, a_y, i], dst[b_x, b_y, i]) + (max(dst[a_x, a_y, i], dst[b_x, b_y, i]) - min(dst[a_x, a_x, i], dst[b_x, b_y, i])) * (dst_y - a_y) / magni
             elif int(dst_y / magni) == dst_y / magni:
-                (a_x, a_y) = (int(dst_x / magni), int(dst_y / magni))
-                (b_x, b_y) = (int(dst_x / magni) + 1, int(dst_y / magni))
-                if b_x > src_height - 1 or b_y > src_width - 1:
+                (a_x, a_y) = (int(dst_x / magni) * magni, int(dst_y / magni) * magni)
+                (b_x, b_y) = (int(dst_x / magni) * magni + magni, int(dst_y / magni) * magni)
+                if b_x > dst_height - 1 or b_y > dst_width - 1:
                     continue
                 for i in range(3):
-                    dst[dst_x, dst_y, i] = smaller(src[a_x, a_y, i], src[b_x, b_y, i]) + (larger(src[a_x, a_y, i], src[b_x, b_y, i]) - smaller(src[a_x, a_y, i], src[b_x, b_y, i])) * (dst_x - a_x * magni) / magni
+                    dst[dst_x, dst_y, i] = min(dst[a_x, a_y, i], dst[b_x, b_y, i]) + (max(dst[a_x, a_y, i], dst[b_x, b_y, i]) - min(dst[a_x, a_y, i], dst[b_x, b_y, i])) * (dst_x - a_x) / magni
 
     for dst_x in range(dst_height):
         for dst_y in range(dst_width):
@@ -81,9 +74,10 @@ def bilinear_interpolation(src, dst_shape, magni):
                 if b_x > dst_height - 1 or b_y > dst_width - 1:
                     continue
                 for i in range(3):
-                    dst[dst_x, dst_y, i] = smaller(dst[a_x, a_y, i], dst[b_x, b_y, i]) + (larger(dst[a_x, a_y, i], dst[b_x, b_y, i]) - smaller(dst[a_x, a_y, i], dst[b_x, b_y, i])) * (dst_y - a_y) / magni
+                    dst[dst_x, dst_y, i] = min(dst[a_x, a_y, i], dst[b_x, b_y, i]) + (max(dst[a_x, a_y, i], dst[b_x, b_y, i]) - min(dst[a_x, a_y, i], dst[b_x, b_y, i])) * (dst_y - a_y) / magni
 
     return dst
+
 
 
 def bicubic_interpolation(src, dst_shape):
