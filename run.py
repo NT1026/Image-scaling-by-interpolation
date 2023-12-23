@@ -8,10 +8,10 @@ Use Bicubic Interpolation please set value as 3.
 Use Lagrange Interpolation please set value as 4.
 """
 
-magni = 3
+magni = 2
 img_path = "images/img.png"
 method = 2
-mode = "GRAY"
+mode = "RGB"
 
 if __name__ == "__main__":
     subprocess.run(["python3", "main.py", "--enlarge", str(magni), "--image", img_path, "--method", str(method), "--mode", mode])

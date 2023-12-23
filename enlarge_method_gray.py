@@ -32,10 +32,7 @@ def nearest_neighbor(src, dst_shape, magni):
             src_x = int(dst_x * (src_width / dst_width))
             src_y = int(dst_y * (src_height / dst_height))
             
-            if channels == 1:
-                dst[dst_x, dst_y] = src[src_x, src_y]
-            elif channels == 3:
-                dst[dst_x, dst_y, :] = src[src_x, src_y, :]
+            dst[dst_x, dst_y] = src[src_x, src_y]
 
     return dst
 
@@ -82,7 +79,6 @@ def bilinear_interpolation(src, dst_shape, magni):
                 if b_x > dst_height - 1 or b_y > dst_width - 1:
                     continue
                 dst[dst_x, dst_y] = smaller(dst[a_x, a_y], dst[b_x, b_y]) + (larger(dst[a_x, a_y], dst[b_x, b_y]) - smaller(dst[a_x, a_y], dst[b_x, b_y])) * (dst_y - a_y) / magni
-
 
     return dst
 

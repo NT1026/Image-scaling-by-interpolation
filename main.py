@@ -1,6 +1,7 @@
 import argparse
 import cv2
-import enlarge_method
+import enlarge_method_gray
+import enlarge_method_rgb
 
 method_help = """
 Enlarge method: 
@@ -11,10 +12,14 @@ Use Lagrange Interpolation please set value as 4.
 """
 
 method = {
-    1: enlarge_method.nearest_neighbor,
-    2: enlarge_method.bilinear_interpolation,
-    3: enlarge_method.bicubic_interpolation,
-    4: enlarge_method.lagrange_interpolation
+    1: enlarge_method_gray.nearest_neighbor,
+    2: enlarge_method_gray.bilinear_interpolation,
+    3: enlarge_method_gray.bicubic_interpolation,
+    4: enlarge_method_gray.lagrange_interpolation,
+    5: enlarge_method_rgb.nearest_neighbor,
+    6: enlarge_method_rgb.bilinear_interpolation,
+    7: enlarge_method_rgb.bicubic_interpolation,
+    8: enlarge_method_rgb.lagrange_interpolation
 }
 
 mode = {
@@ -42,10 +47,12 @@ if __name__ == "__main__":
     # Result
     if _mode == "GRAY":
         src = cv2.imread(_img_path, cv2.IMREAD_GRAYSCALE)
-    else:
-        src = cv2.imread(_img_path)
+        dst = method[_method](src, dst_shape=(src.shape[0] * _magni, src.shape[1] * _magni, mode[_mode]), magni=_magni)
 
-    dst = method[_method](src, dst_shape=(src.shape[0] * _magni, src.shape[1] * _magni, mode[_mode]), magni=_magni)
+    elif _mode == "RGB":
+        src = cv2.imread(_img_path)
+        dst = method[_method + 4](src, dst_shape=(src.shape[0] * _magni, src.shape[1] * _magni, mode[_mode]), magni=_magni)
+
 
     # Output
     cv2.namedWindow('src', cv2.WINDOW_NORMAL) 
