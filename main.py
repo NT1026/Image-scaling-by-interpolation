@@ -45,10 +45,7 @@ if __name__ == "__main__":
     else:
         src = cv2.imread(_img_path)
 
-    dst_height = src.shape[0] * _magni
-    dst_width = src.shape[1] * _magni
-    channels = mode[_mode]
-    dst = method[_method](src, dst_shape=(dst_height, dst_width, channels))
+    dst = method[_method](src, dst_shape=(src.shape[0] * _magni, src.shape[1] * _magni, mode[_mode]), magni=_magni)
 
     # Output
     cv2.namedWindow('src', cv2.WINDOW_NORMAL) 
