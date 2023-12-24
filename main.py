@@ -27,6 +27,17 @@ mode = {
     "RGB": 3
 }
 
+filename = {
+    1: "nearest_gray",
+    2: "bilinear_gray",
+    3: "bicubic_gray",
+    4: "lagrange_gray",
+    5: "nearest_rgb",
+    6: "bilinear_rgb",
+    7: "bicubic_rgb",
+    8: "lagrange_rgb"
+}
+
 
 if __name__ == "__main__":
     # Parameter settings
@@ -62,6 +73,12 @@ if __name__ == "__main__":
     cv2.namedWindow('dst', cv2.WINDOW_NORMAL) 
     cv2.resizeWindow('dst', dst.shape[1], dst.shape[0])
     cv2.imshow("dst",dst)
+
+    if _mode == "GRAY":
+        cv2.imwrite(f"output/{filename[_method]}.jpg", dst)
+
+    elif _mode == "RGB":
+        cv2.imwrite(f"output/{filename[_method + 4]}.jpg", dst)
 
     # Press any key to close the windows
     cv2.waitKey(0)
