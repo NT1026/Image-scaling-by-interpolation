@@ -10,7 +10,7 @@ Use Lagrange Interpolation please set value as 4.
 
 magni = 4
 img_path = "images/Lenna.jpg"
-method = 2
+method = 3
 mode = "RGB"
 
 if __name__ == "__main__":
