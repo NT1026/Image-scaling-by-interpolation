@@ -2,6 +2,7 @@ import argparse
 import cv2
 import enlarge_method_gray
 import enlarge_method_rgb
+import time 
 
 method_help = """
 Enlarge method: 
@@ -56,6 +57,8 @@ if __name__ == "__main__":
     _mode = args.mode
 
     # Result
+    start_time = time.time()
+
     if _mode == "GRAY":
         src = cv2.imread(_img_path, cv2.IMREAD_GRAYSCALE)
         dst = method[_method](src, dst_shape=(src.shape[0] * _magni, src.shape[1] * _magni, mode[_mode]), magni=_magni)
@@ -64,6 +67,7 @@ if __name__ == "__main__":
         src = cv2.imread(_img_path)
         dst = method[_method + 4](src, dst_shape=(src.shape[0] * _magni, src.shape[1] * _magni, mode[_mode]), magni=_magni)
 
+    print(f"{time.time() - start_time} s")
 
     # Output
     cv2.namedWindow('src', cv2.WINDOW_NORMAL) 
@@ -81,5 +85,5 @@ if __name__ == "__main__":
         cv2.imwrite(f"output/{filename[_method + 4]}.jpg", dst)
 
     # Press any key to close the windows
-    cv2.waitKey(0)
-    cv2.destroyAllWindows()
+    # cv2.waitKey(0)
+    # cv2.destroyAllWindows()
