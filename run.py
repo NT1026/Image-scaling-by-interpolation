@@ -8,9 +8,16 @@ Use Bicubic Interpolation please set value as 3.
 Use Lagrange Interpolation please set value as 4.
 """
 
-magni = 4
-img_path = "images/Lenna.jpg"
-method = 3
+imgs = {
+    1: "images/100x100.jpg",
+    2: "images/316x316.jpg",
+    3: "images/600x600.jpg",
+    4: "images/1600x1200.jpg"
+}
+
+magni = 8
+img_path = imgs[1]
+method = 1
 mode = "RGB"
 
 if __name__ == "__main__":

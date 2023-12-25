@@ -39,6 +39,13 @@ filename = {
     8: "lagrange_rgb"
 }
 
+img_name = {
+    "images/100x100.jpg": "100x100",
+    "images/316x316.jpg": "316x316",
+    "images/600x600.jpg": "600x600",
+    "images/1600x1200.jpg": "1600x1200"
+}
+
 
 if __name__ == "__main__":
     # Parameter settings
@@ -54,7 +61,7 @@ if __name__ == "__main__":
     _magni = args.enlarge
     _img_path = args.image
     _method = args.method
-    _mode = args.mode
+    _mode = args.mode    
 
     # Result
     start_time = time.time()
@@ -65,24 +72,25 @@ if __name__ == "__main__":
 
     elif _mode == "RGB":
         src = cv2.imread(_img_path)
-        dst = method[_method + 4](src, dst_shape=(src.shape[0] * _magni, src.shape[1] * _magni, mode[_mode]), magni=_magni)
-
-    print(f"{time.time() - start_time} s")
-
-    # Output
-    cv2.namedWindow('src', cv2.WINDOW_NORMAL) 
-    cv2.resizeWindow('src', src.shape[1], src.shape[0])
-    cv2.imshow("src",src) 
-
-    cv2.namedWindow('dst', cv2.WINDOW_NORMAL) 
-    cv2.resizeWindow('dst', dst.shape[1], dst.shape[0])
-    cv2.imshow("dst",dst)
+        _method += 4
+        dst = method[_method](src, dst_shape=(src.shape[0] * _magni, src.shape[1] * _magni, mode[_mode]), magni=_magni)
+        
+    print(f"{_img_path}\t{_magni}\t{method[_method]}\t{time.time() - start_time} s")
 
     if _mode == "GRAY":
-        cv2.imwrite(f"output/{filename[_method]}.jpg", dst)
+        cv2.imwrite(f"output/{_magni}x_{img_name[_img_path]}_{filename[_method]}.jpg", dst)
 
     elif _mode == "RGB":
-        cv2.imwrite(f"output/{filename[_method + 4]}.jpg", dst)
+        cv2.imwrite(f"output/{_magni}x_{img_name[_img_path]}_{filename[_method]}.jpg", dst)
+
+    # Output
+    # cv2.namedWindow('src', cv2.WINDOW_NORMAL) 
+    # cv2.resizeWindow('src', src.shape[1], src.shape[0])
+    # cv2.imshow("src",src) 
+
+    # cv2.namedWindow('dst', cv2.WINDOW_NORMAL) 
+    # cv2.resizeWindow('dst', dst.shape[1], dst.shape[0])
+    # cv2.imshow("dst",dst)
 
     # Press any key to close the windows
     # cv2.waitKey(0)
