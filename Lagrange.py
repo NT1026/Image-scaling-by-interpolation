@@ -40,28 +40,25 @@ def enlarge_image_lagrange_xy(original_image, scale_factor):
 #original_image = cv2.imread(image_path, cv2.IMREAD_GRAYSCALE)
 
 # or繪製簡單影像
-original_image = np.array([[255,255,255,255,255],
-                           [0,255,255,255,0],
-                           [0,255,0,255,0],
-                           [255,0,255,0,255],
-                           [255,255,255,255,255]
+original_image = np.array([[1,2,3],
+                           [4,5,6],
+                           [7,8,9]
                            ])
 
 # 設定放大倍率
-scale_factor = 2
+scale_factors = [1, 2, 5, 10]
 
-# 進行影像放大
-enlarged_image = enlarge_image_lagrange_xy(original_image, scale_factor)
+# 建立子圖
+plt.figure(figsize=(15, 5))
 
-# 繪製原始影像
-plt.subplot(1, 2, 1)
-plt.imshow(original_image, cmap='gray')
-plt.title('Original Image')
+for i, scale_factor in enumerate(scale_factors):
+    # 進行影像放大
+    enlarged_image = enlarge_image_lagrange_xy(original_image, scale_factor)
 
-# 繪製放大後的影像
-plt.subplot(1, 2, 2)
-plt.imshow(enlarged_image, cmap='gray')
-plt.title('Enlarged Image')
+    # 繪製影像
+    plt.subplot(1, len(scale_factors), i + 1)
+    plt.imshow(enlarged_image, cmap='gray')
+    plt.title(f'Enlarged {scale_factor}x')
 
 # 顯示影像
 plt.show()
